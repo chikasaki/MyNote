@@ -1,10 +1,12 @@
 1. 类加载的三个步骤:
     - 将类从磁盘load到内存
     - Linking
-        - Verification
-        - Preparation
-        - Resolution
-    - Initializing
+        - Verification: 验证类文件格式
+        - Preparation: 为类的静态变量赋**默认值**
+        - Resolution: 将类、方法、属性等符号引用解析为直接引用
+            - 符号引用: 指向Class **常量池** 的引用
+            - 直接引用: 直接指向**堆/方法区**相应位置的引用
+    - Initializing: 调用类初始化代码，给静态成员变量赋初始值
     
 2. Loading过程详解:
     ![classloader](./images/classloader.png)
@@ -35,6 +37,16 @@
             - 为了安全考虑，如果不使用，则代码编写者可以编写一个
             与核心库中名字完全一样的类，来覆盖原来的类，从而造成安全问题
             - 加载过一次的类，没必要再加载第二次    
+    - 打破双亲委派模型:
+        - 如何打破: 重写 `loadClass` 方法
+            - 重写之后，可以不执行`查找缓存`, `寻找父加载器`的逻辑
+            
+        - Java的打破历史:
+            - JDK1.2之前，自定义ClassLoader都必须重写loadClass()
+            - ThreadContextClassLoader可以实现基础类调用实现类代码，通过thread.setContextClassLoader指定
+            - 热启动，热部署
+                - osgi tomcat 都有自己的模块指定classloader（可以加载同一类库的不同版本）
+
     - `LazyLoading`五种情况:
         - `new getstatic putstatic invokestatic`指令，访问final变量除外
         - `java.lang.reflect`对类进行反射调用时
@@ -47,4 +59,5 @@
         - `-Xmixed`: 默认
         - `-Xint`: 改为纯解释器
         - `-Xcomp`: 改为纯编译
+        - `-XXCompileThreshold`: mixed状态下检测热点代码次数限制
         
