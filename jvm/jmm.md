@@ -1,6 +1,6 @@
 1. 硬件层面:
     - CPU缓存与内存结构:
-        ![cpulayer](./images/cpulayer.png)
+        ![cpulayer](images/cpulayer.png)
     - 现代cpu的数据一致性实现:
         - 缓存锁(Intel使用MESI协议) + 总线锁
             - MESI: CPU中每个缓存行使用4种状态进行标记
@@ -21,7 +21,7 @@
         - 重排序的本质:
             由于内存读取的速度远慢于CPU的执行速度，所以当前一条指令去
             读取内存时，后一条指令如果跟前一条指令没有关系，并且后一条
-            指令可以马上执行的话，CPU就会马上去执行下一条指令，这时候
+            指令可以马上执行的话，CPU就会马上去执行下一条指令， 这时候
             就发生了指令重排序的问题
         - WCBuffer: 合并写缓存
             - 是一个比`L1 Cache`更快的缓存
@@ -53,5 +53,34 @@
         - sfence: 写屏障，在sfence指令前的写操作当必须在sfence指令后的写操作前完成。
         - lfence: 读屏障，在lfence指令前的读操作当必须在lfence指令后的读操作前完成。
         - mfence: 读写屏障，在mfence指令前的读写操作当必须在mfence指令后的读写操作前完成。
+    
+2. JVM级别对屏障的规范:
+    - LoadLoad: `Load1; LoadLoad; Load2`，`Load2`读取前要保证`Load1`数据读取完毕
+    - StoreStore: `Store1; StoreStore; Store2`，`Store2`写入前要保证`Store1`数据写入完毕
+    - LoadStore: `Load1; LoadStore; Store2`，`Store2`写入前要保证`Load1`数据读取完毕
+    - StoreLoad: `Store1; StoreLoad; Load2`，`Load2`读取前要保证`Store1`数据写入完毕
+    
+3. volatile实现细节:
+    - 字节码层面: access_flags - ACC_VOLATILE
+    - JVM层面:
+        > StoreStoreBarrier
+        > volatile写
+        > StoreLoadBarrier
             
-           
+        > LoadLoadBarrier
+        > volatile读
+        > LoadStoreBarrier
+    - OS及硬件层面:
+        - x86: sfence, lfence, mfence + lock
+        - lock指令:
+            使用在指令之上，会锁定后序指定使用的内存块；
+        - cmpxchg: compareAndExchange，CAS指令
+
+4. synchronized实现细节:
+    - 字节码层面:
+        - ACC_SYNCHRONIZED: 方法
+        - monitorenter, monitorexit: 代码块
+    - JVM层面:
+        - C，C++ 调用了操作系统提供的同步机制
+        - OS和硬件层面:
+            lock cmpxchg/xxx

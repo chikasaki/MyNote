@@ -9,7 +9,7 @@
     - Initializing: 调用类初始化代码，给静态成员变量赋初始值
     
 2. Loading过程详解:
-    ![classloader](./images/classloader.png)
+    ![classloader](images/classloader.png)
     - 类加载器:
         - `BootStrap`: 使用C++实现，Java中没有具体Class与之对应，打印时为null
             - 加载核心类，如`String, rt.jar, charset.jar`
@@ -24,7 +24,7 @@
                 - 使用: `xxxClass.getClass().getClassLoader().getParent()`可以获得加载器的父加载器
     - `Launcher`类中包含了各种类加载器的实现
     - 使用双亲委派模型:
-        ![shuangqinweipai](./images/shuangqinweipai.png)
+        ![shuangqinweipai](images/shuangqinweipai.png)
         - 首先在当前`Loader`找缓存
             - 找到 -> `return`
             - 找不到 -> 父类找

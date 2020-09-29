@@ -1,5 +1,5 @@
 1. 什么是JVM?
-    ![jvm](./images/javaprocess.png)
+    ![jvm](images/javaprocess.png)
     - JVM 是在OS之上的虚拟机器，有自己的CPU，内存管理，汇编语言...
 
 2. JVM 是一种跨语言的规范，只要某种语言能够翻译成 class 文件格式，
@@ -14,10 +14,10 @@
     - azul zing
     
 4. Jdk, JRE and JVM
-    ![3j](./images/3j.png)
+    ![3j](images/3j.png)
     
 5. class 文件结构:
-    ![class structure](./images/classstructure.png)
+    ![class structure](images/classstructure.png)
     - 前四个字节: CAFE BABE，固定的Magic Number
     - constant_pool_count
     - constant_pool_count - 1 个常量的定义, 标号从1开始，0是为了让那些不引用常量池引用的
