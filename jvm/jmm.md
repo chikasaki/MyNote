@@ -6,7 +6,7 @@
             - MESI: CPU中每个缓存行使用4种状态进行标记
                 - M: Modified, 当前CPU加载的部分是否已变化
                 - E: Exclusive, 该缓存行只被缓存在该CPU的缓存中
-                - S: Shared，该缓存行可能被多个CPU缓存
+                - S: S hared，该缓存行可能被多个CPU缓存
                 - I: Invalid，该缓存是无效的，可能有其他CPU修改了该缓存行
             - cache line: CPU读取缓存的基本单位，一般为`64字节`
             - 伪共享问题:
