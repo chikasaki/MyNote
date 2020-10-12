@@ -38,13 +38,11 @@
     - Redis为程序员提供的事务安全命令:
         - `watch key`: 保证`key`被改变时，整个事务会被回滚(即队列中所有
         指令都将不再执行); 通过`cas`实时监控`key`的变化
-    - `discard`: 可以将整个指令队列清空，同时取消事务
+    - `discard`: 可以将整个指令队列清空，同时取消事务 
     
-3. redis module:
-    - redis模块: 可以将其它redis本身没有包含的功能和指令，通过
-    模块引入；比如布隆过滤器
-    - 布隆过滤器:
-        ![bloomfilters](./images/bloomfilter.png)
+3. redis module: 
+    - redis模块: 可以将其它redis本身没有包含的功能和指令，通过 模块引入；比如布隆过滤器 
+        - 布隆过滤器: ![bloomfilters](./images/bloomfilter.png) 
         
 4. redis pipeline:
     - 一般通过网络执行redis多条命令的情况:
