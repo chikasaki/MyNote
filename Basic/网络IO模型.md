@@ -20,6 +20,13 @@
             导致一个`< 1500 bytes`的包可能会被分成很多份
             - false: 默认状态，会等待其他包一起组成一个更大的包
             再通过网络发送
+    - TCP四次分手的状态分析:
+        ![TCP四次分手](./images/TCP四次分手.png)
+        - 为什么需要四次分手？
+            - 接收分手的一端需要时间处理剩余事情之后，才能释放资源
+            - TCP是面向连接的协议，有发送必有回应
+        - 最后发送断开连接的一端，需要进入`2MSL`的`TIME_WAIT`
+            - 保证网络上不再有之前`socket`的残留包
     
 3. 多开启服务并多线程监听端口的过程:
     ![service](./images/NetworkBIO.png)
@@ -49,3 +56,11 @@
         - socket.register(): 相当于`epoll_ctl`
         - selector.select(timeout): 相当于`epoll_wait`
         - SelectionKey: 相当于文件描述符对应的socket
+    
+5. 多线程selector模型:
+    ![多线程selector模型](./images/MultiThreadInNetworkIO.png)
+    - 对于`write`，一般会在以下两种情况都满足的情况下开写:
+        - 用户想写，一般是在`read`之后
+        - TCP的`send-queue`还有剩余空间
+    - `write`调用完之后，应及时`cancel`，否则文件描述符(SelectionKey)
+    会一直`WriteAble`
