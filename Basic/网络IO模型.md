@@ -43,7 +43,7 @@
 4. 网络IO模型演变:
     - BIO -> 普通NIO -> select多路复用 -> epoll多路复用
     - 普通NIO:
-        ![BIO](./images/NetworkBIO.png)
+        ![NIO](./images/普通NIO.png)
     - select多路复用:
         ![select](./images/select多路复用.png)
     - epoll多路复用:
